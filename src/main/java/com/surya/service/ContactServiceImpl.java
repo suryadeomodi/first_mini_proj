@@ -16,6 +16,7 @@ public class ContactServiceImpl implements ContactService {
 	@Override
 	public String upsert(Contact contact) {
 		Contact contact2=repository.save(contact);
+		System.out.println(contact);
 		return "saved";
 	}
 
@@ -30,15 +31,24 @@ public class ContactServiceImpl implements ContactService {
 	public Contact getContact(Integer id) {
 		Optional<Contact> findBid=repository.findById(id);
 		if(findBid.isPresent()) {
-			return findBid.get();
+			Contact contact2= findBid.get();
+			return contact2;
 		}
 		return null;
 	}
 
 	@Override
 	public String deleteContact(Integer id) {
-		repository.deleteById(id);
+		
+		Optional<Contact> findById=repository.findById(id);
+		if(findById.isPresent()) {
+			Contact contact=findById.get();
+			System.out.println(contact);
+			contact.setActiveSw("N");
+			repository.save(contact);
+		}
+		//repository.deleteById(id);
 		return "deleted";
 	}
-
+	
 }
